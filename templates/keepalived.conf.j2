@@ -1,0 +1,46 @@
+global_defs {
+}
+
+{% for vs in nlb_forward %}
+virtual_server {{ nlb_forward_ip }} {{ nlb_forward[vs].port }} {
+    delay_loop 15
+    lb_algo {{ nlb_forward[vs].algo | default('rr')  | lower }}
+    lb_kind {{ nlb_forward[vs].type | default('NAT') | upper }}
+    persistence_timeout 50
+    protocol {{ nlb_forward[vs].proto | default('TCP') | upper }}
+
+{% for backend in nlb_forward[vs].backends %}
+    real_server {{ backend.ip }} {{ backend.port }} {
+        weight 1
+{% for check in nlb_backends_health_check %}{% if check.name == backend.health_check %}
+{% if check.proto == "http" %}
+        HTTP_GET {
+            url {
+                path {{ check.path | default('/healthz') }}
+            }
+            connect_timeout 3
+            retry 3
+            delay_before_retry 2
+        }
+{% elif check.proto == "https" %}
+        SSL_GET {
+            url {
+                path {{ check.path | default('/healthz') }}
+            }
+            connect_timeout 3
+            retry 3
+            delay_before_retry 2
+        }
+{% elif check.proto == "tcp" %}
+        TCP_CHECK {
+            connect_timeout 3
+{% if check.port %}
+            connect_port {{ check.port }}
+{% endif %}
+        }
+{% endif %}
+{% endif %}{% endfor %}
+    }
+{% endfor %}
+}
+{% endfor %}

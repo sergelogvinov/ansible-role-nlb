@@ -1,0 +1,15 @@
+galaxy_info:
+  author: Serge Logvinov
+  description: Local network load balancer
+  license: MIT
+  min_ansible_version: 2.4
+  platforms:
+    - name: Debian
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+  galaxy_tags: []
+
+dependencies: []

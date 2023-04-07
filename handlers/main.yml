@@ -1,0 +1,11 @@
+---
+
+- name: keepalived-systemctl-reload
+  become: yes
+  shell: systemctl daemon-reload
+
+- name: keepalived-restart
+  become: yes
+  service:
+    name:  keepalived
+    state: restarted

@@ -1,0 +1,28 @@
+---
+
+- include_vars: "{{ item }}"
+  with_first_found:
+    - "../vars/{{ ansible_os_family }}.yml"
+    - "../vars/empty.yml"
+
+- name: Install keepalived
+  become: yes
+  apt:
+    name: "{{ nlb_package }}"
+    state: present
+    install_recommends: false
+
+- name: Update main config
+  become: yes
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  notify:
+    - keepalived-restart
+  when: item.when
+  with_items:
+    - { src: "keepalived.conf.j2",  dest: "/etc/keepalived/keepalived.conf",      mode: '0644', when: true }
+    - { src: "keepalived.j2",       dest: "/etc/default/keepalived",              mode: '0644', when: true }
