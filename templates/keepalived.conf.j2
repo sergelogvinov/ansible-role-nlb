@@ -2,7 +2,16 @@ global_defs {
 }
 
 {% for vs in nlb_forward %}
-virtual_server {{ nlb_forward_ip }} {{ nlb_forward[vs].port }} {
+{% set frontend = nlb_forward_ip %}
+{% if nlb_forward_ip is string %}
+{% set frontend = [nlb_forward_ip] %}
+{% endif %}
+{% for ip in frontend %}{% if
+    (ip.find('.') > 0 and not(nlb_forward[vs].family is defined and nlb_forward[vs].family == 'ipv6'))
+    or
+    (ip.find(':') > 0 and (nlb_forward[vs].family is defined and nlb_forward[vs].family == 'ipv6'))
+%}
+virtual_server {{ ip }} {{ nlb_forward[vs].port }} {
     delay_loop 15
     lb_algo {{ nlb_forward[vs].algo | default('rr')  | lower }}
     lb_kind {{ nlb_forward[vs].type | default('NAT') | upper }}
@@ -10,6 +19,8 @@ virtual_server {{ nlb_forward_ip }} {{ nlb_forward[vs].port }} {
     protocol {{ nlb_forward[vs].proto | default('TCP') | upper }}
 
 {% for backend in nlb_forward[vs].backends %}
+{% if (ip.find('.') > 0 and backend.ip.find('.') > 0) or
+      (ip.find(':') > 0 and backend.ip.find(':') > 0) %}
     real_server {{ backend.ip }} {{ backend.port }} {
         weight 1
 {% for check in nlb_backends_health_check %}{% if check.name == backend.health_check %}
@@ -41,6 +52,7 @@ virtual_server {{ nlb_forward_ip }} {{ nlb_forward[vs].port }} {
 {% endif %}
 {% endif %}{% endfor %}
     }
-{% endfor %}
+{% endif %}{% endfor %}
 }
+{% endif %}{% endfor %}
 {% endfor %}

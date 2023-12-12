@@ -4,6 +4,7 @@ nlb_forward_ip: "{{ ansible_default_ipv4['address'] }}"
 nlb_forward: {}
   # ingress-http:
   #   port: 80
+  #   # family: ipv4|ipv6
   #   # type: NAT|DR
   #   # algo: rr|lc|sh|dh
   #   # proto: TCP|UDP
