@@ -28,7 +28,9 @@ server-1          ansible_host=1.2.3.4
 ```yaml
 # hosts/server-1.yaml
 
-nlb_forward_ip: "{{ ansible_default_ipv4['address'] }}"
+nlb_forward_ip:
+  - "{{ ansible_default_ipv4['address'] }}"
+
 nlb_forward:
   ingress-http:
     port: 80

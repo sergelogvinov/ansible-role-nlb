@@ -1,6 +1,8 @@
 ---
 
-nlb_forward_ip: "{{ ansible_default_ipv4['address'] }}"
+nlb_forward_ip:
+  - "{{ ansible_default_ipv4['address'] }}"
+
 nlb_forward: {}
   # ingress-http:
   #   port: 80
