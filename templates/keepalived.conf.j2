@@ -15,7 +15,9 @@ virtual_server {{ ip }} {{ nlb_forward[vs].port }} {
     delay_loop 15
     lb_algo {{ nlb_forward[vs].algo | default('rr')  | lower }}
     lb_kind {{ nlb_forward[vs].type | default('NAT') | upper }}
-    persistence_timeout 50
+{% if nlb_forward[vs]['persistence'] is defined and nlb_forward[vs].persistence > 0 %}
+    persistence_timeout {{ nlb_forward[vs].persistence }}
+{% endif %}
     protocol {{ nlb_forward[vs].proto | default('TCP') | upper }}
 
 {% for backend in nlb_forward[vs].backends %}
