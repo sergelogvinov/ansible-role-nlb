@@ -25,4 +25,5 @@ nlb_forward: {}
 nlb_backends_health_check:
   - { name: http,  path: "/healthz", proto: "http"  }
   - { name: https, path: "/healthz", proto: "https" }
-  - { name: tcp,   port: 50000,      proto: "tcp"   }
+  - { name: tcp,                     proto: "tcp"   }
+  # - { name: tcp,   port: 50000,      proto: "tcp"   }

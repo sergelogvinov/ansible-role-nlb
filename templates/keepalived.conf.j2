@@ -47,7 +47,9 @@ virtual_server {{ ip }} {{ nlb_forward[vs].port }} {
 {% elif check.proto == "tcp" %}
         TCP_CHECK {
             connect_timeout 3
-{% if check.port %}
+            retry 3
+            delay_before_retry 2
+{% if check.port is defined %}
             connect_port {{ check.port }}
 {% endif %}
         }
