@@ -1,0 +1,36 @@
+#
+
+router id {{ nlb_bgp_router_id }};
+
+filter nlb {
+{% for ip in nlb_forward_ip if (ip.find('.') > 0) and (ip != ansible_default_ipv4['address'])%}
+    if net = {{ ip }}/32 then accept;
+{% endfor %}
+}
+
+protocol kernel {
+    scan time 60;
+    import none;
+    export none;
+}
+
+protocol device {
+    scan time 60;
+}
+
+protocol direct {
+    interface "{{ nlb_bgp_instance }}";
+}
+
+{% for peers in nlb_bgp_peers %}
+protocol bgp uplink{{ loop.index }} {
+     description "BGP uplink {{ loop.index }}";
+     local {{ nlb_bgp_router_id }} as {{ peers.local_as }};
+     neighbor {{ peers.ip }} as {{ peers.peer_as }};
+
+     import none;
+     export filter nlb;
+     graceful restart on;
+};
+
+{% endfor %}

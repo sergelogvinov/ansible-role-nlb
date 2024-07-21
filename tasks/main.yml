@@ -27,3 +27,6 @@
   with_items:
     - { src: "keepalived.conf.j2",  dest: "/etc/keepalived/keepalived.conf",      mode: '0644', when: true }
     - { src: "keepalived.j2",       dest: "/etc/default/keepalived",              mode: '0644', when: true }
+
+- import_tasks: bgp.yml
+  when: nlb_bgp|bool and nlb_forward|length > 0

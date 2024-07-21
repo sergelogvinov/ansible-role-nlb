@@ -27,3 +27,12 @@ nlb_backends_health_check:
   - { name: https, path: "/healthz", proto: "https" }
   - { name: tcp,                     proto: "tcp"   }
   # - { name: tcp,   port: 50000,      proto: "tcp"   }
+
+### BGP Configuration
+
+nlb_bgp: false
+
+nlb_bgp_router_id: "{{ ansible_default_ipv4['address'] }}"
+nlb_bgp_instance: dummy1
+nlb_bgp_peers: []
+  # - { ip: "", local_as: 65000, peer_as: 65000 }
