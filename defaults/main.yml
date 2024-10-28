@@ -28,6 +28,21 @@ nlb_backends_health_check:
   - { name: tcp,                     proto: "tcp"   }
   # - { name: tcp,   port: 50000,      proto: "tcp"   }
 
+nlb_vrrp: {}
+  # vip:
+  #   id: 100
+  #   state: MASTER
+  #   priority: 100
+  #   interface: vmbr1
+  #   src: 172.16.1.11
+  #   peers:
+  #     - 172.16.1.12
+  #   vips:
+  #     - 172.16.1.253/32
+  #   auth:
+  #     type: PASS
+  #     pass: 12345678
+
 ### BGP Configuration
 
 nlb_bgp: false

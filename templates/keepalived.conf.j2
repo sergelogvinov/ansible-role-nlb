@@ -60,3 +60,33 @@ virtual_server {{ ip }} {{ nlb_forward[vs].port }} {
 }
 {% endif %}{% endfor %}
 {% endfor %}
+
+
+{% for vrrp in nlb_vrrp %}
+vrrp_instance {{ vrrp }} {
+    state {{ nlb_vrrp[vrrp].state | default('MASTER') | upper }}
+    virtual_router_id {{ nlb_vrrp[vrrp].id | default(100) }}
+    priority {{ nlb_vrrp[vrrp].priority | default(100) }}
+    interface {{ nlb_vrrp[vrrp].interface }}
+{% if nlb_vrrp[vrrp]['src'] is defined %}
+    unicast_src_ip {{ nlb_vrrp[vrrp].src }}
+{% for peer in nlb_vrrp[vrrp].peers if nlb_vrrp[vrrp]['peers'] is defined %}
+    unicast_peer {
+        {{ peer }}
+    }
+{% endfor %}
+{% endif %}
+{% for vip in nlb_vrrp[vrrp].vips if nlb_vrrp[vrrp]['vips'] is defined %}
+    virtual_ipaddress {
+        {{ vip }}
+    }
+{% endfor %}
+    advert_int 5
+{% if nlb_vrrp[vrrp]['auth'] is defined %}
+    authentication {
+        auth_type {{ nlb_vrrp[vrrp].auth['type'] | default('PASS') | upper }}
+        auth_pass {{ nlb_vrrp[vrrp].auth['pass'] }}
+    }
+{% endif %}
+}
+{% endfor %}

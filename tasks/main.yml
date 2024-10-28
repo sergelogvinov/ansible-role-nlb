@@ -11,7 +11,7 @@
     name: "{{ nlb_package }}"
     state: present
     install_recommends: false
-  when: nlb_package is defined and nlb_forward|length > 0
+  when: nlb_package is defined and (nlb_forward|length > 0 or nlb_vrrp|length > 0)
 
 - name: Update main config
   become: yes
@@ -23,7 +23,7 @@
     mode: "{{ item.mode }}"
   notify:
     - keepalived-restart
-  when: item.when and nlb_forward|length > 0
+  when: item.when and (nlb_forward|length > 0 or nlb_vrrp|length > 0)
   with_items:
     - { src: "keepalived.conf.j2",  dest: "/etc/keepalived/keepalived.conf",      mode: '0644', when: true }
     - { src: "keepalived.j2",       dest: "/etc/default/keepalived",              mode: '0644', when: true }
