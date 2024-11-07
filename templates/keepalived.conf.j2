@@ -76,11 +76,13 @@ vrrp_instance {{ vrrp }} {
     }
 {% endfor %}
 {% endif %}
-{% for vip in nlb_vrrp[vrrp].vips if nlb_vrrp[vrrp]['vips'] is defined %}
+{% if nlb_vrrp[vrrp]['vips'] is defined %}
     virtual_ipaddress {
+{% for vip in nlb_vrrp[vrrp].vips %}
         {{ vip }}
-    }
 {% endfor %}
+    }
+{% endif %}
     advert_int 5
 {% if nlb_vrrp[vrrp]['auth'] is defined %}
     authentication {
