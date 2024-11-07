@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/sergelogvinov/ansible-role-nlb/compare/v0.5.0...v0.5.1) (2024-11-07)
+
+
+### Bug Fixes
+
+* virt ip list ([fcb398b](https://github.com/sergelogvinov/ansible-role-nlb/commit/fcb398b0e3e988fd19f53fceffca48bbdff40075))
+
 ## [0.5.0](https://github.com/sergelogvinov/ansible-role-nlb/compare/v0.4.0...v0.5.0) (2024-10-28)
 
 
