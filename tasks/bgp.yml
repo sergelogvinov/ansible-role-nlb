@@ -2,14 +2,14 @@
 - name: package bird
   apt:
     name: bird
-  become: yes
+  become: true
   tags: ['nlb']
 
 - name: bird configuration
   template:
     src: bird.conf.j2
     dest: /etc/bird/bird.conf
-  become: yes
+  become: true
   tags: ['nlb']
 
 - name: restart bird
@@ -17,5 +17,5 @@
     name: bird
     enabled: yes
     state: restarted
-  become: yes
+  become: true
   tags: ['nlb']

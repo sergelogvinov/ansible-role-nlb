@@ -1,7 +1,7 @@
 ---
 
 nlb_forward_ip:
-  - "{{ ansible_default_ipv4['address'] }}"
+  - "{{ ansible_facts['default_ipv4']['address'] }}"
 
 nlb_forward: {}
   # ingress-http:
@@ -47,7 +47,7 @@ nlb_vrrp: {}
 
 nlb_bgp: false
 
-nlb_bgp_router_id: "{{ ansible_default_ipv4['address'] }}"
+nlb_bgp_router_id: "{{ ansible_facts['default_ipv4']['address'] }}"
 nlb_bgp_instance: dummy1
 nlb_bgp_peers: []
   # - { ip: "", local_as: 65000, peer_as: 65000 }
