@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.1](https://github.com/sergelogvinov/ansible-role-nlb/compare/v0.5.0...v0.5.1) (2026-01-31)
+
+
+### Bug Fixes
+
+* ansible deprecation warning ([490704d](https://github.com/sergelogvinov/ansible-role-nlb/commit/490704dce0c610ae6a17674dbb5b0e9400471550))
+* virt ip list ([fcb398b](https://github.com/sergelogvinov/ansible-role-nlb/commit/fcb398b0e3e988fd19f53fceffca48bbdff40075))
+
 ## [0.5.0](https://github.com/sergelogvinov/ansible-role-nlb/compare/v0.4.0...v0.5.0) (2024-10-28)
 
 
