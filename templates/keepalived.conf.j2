@@ -53,6 +53,12 @@ virtual_server {{ ip }} {{ nlb_forward[vs].port }} {
             connect_port {{ check.port }}
 {% endif %}
         }
+{% elif check.proto == "tls" %}
+        SSL_GET {
+            connect_timeout 3
+            retry 3
+            delay_before_retry 2
+        }
 {% endif %}
 {% endif %}{% endfor %}
     }
