@@ -1,12 +1,12 @@
 global_defs {
 }
 
-{% for vs in nlb_forward %}
+{% for vs in nlb_forward|default([]) %}
 {% set frontend = nlb_forward_ip %}
 {% if nlb_forward_ip is string %}
 {% set frontend = [nlb_forward_ip] %}
 {% endif %}
-{% for ip in frontend %}{% if
+{% for ip in frontend|default([]) %}{% if
     (ip.find('.') > 0 and not(nlb_forward[vs].family is defined and nlb_forward[vs].family == 'ipv6'))
     or
     (ip.find(':') > 0 and (nlb_forward[vs].family is defined and nlb_forward[vs].family == 'ipv6'))
@@ -20,12 +20,13 @@ virtual_server {{ ip }} {{ nlb_forward[vs].port }} {
 {% endif %}
     protocol {{ nlb_forward[vs].proto | default('TCP') | upper }}
 
+{% if nlb_forward[vs].backends is iterable %}
 {% for backend in nlb_forward[vs].backends %}
 {% if (ip.find('.') > 0 and backend.ip.find('.') > 0) or
       (ip.find(':') > 0 and backend.ip.find(':') > 0) %}
     real_server {{ backend.ip }} {{ backend.port }} {
         weight 1
-{% for check in nlb_backends_health_check %}{% if check.name == backend.health_check %}
+{% for check in nlb_backends_health_check|default([]) %}{% if check.name == backend.health_check %}
 {% if check.proto == "http" %}
         HTTP_GET {
             url {
@@ -62,11 +63,10 @@ virtual_server {{ ip }} {{ nlb_forward[vs].port }} {
 {% endif %}
 {% endif %}{% endfor %}
     }
-{% endif %}{% endfor %}
+{% endif %}{% endfor %}{% endif %}
 }
 {% endif %}{% endfor %}
 {% endfor %}
-
 
 {% for vrrp in nlb_vrrp %}
 vrrp_instance {{ vrrp }} {

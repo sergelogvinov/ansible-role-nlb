@@ -1,5 +1,4 @@
 ---
-
 - include_vars: "{{ item }}"
   with_first_found:
     - "../vars/{{ ansible_facts['os_family'] }}.yml"
@@ -25,8 +24,8 @@
     - keepalived-restart
   when: item.when and (nlb_forward|length > 0 or nlb_vrrp|length > 0)
   with_items:
-    - { src: "keepalived.conf.j2",  dest: "/etc/keepalived/keepalived.conf",      mode: '0644', when: true }
-    - { src: "keepalived.j2",       dest: "/etc/default/keepalived",              mode: '0644', when: true }
+    - { src: "keepalived.conf.j2", dest: "/etc/keepalived/keepalived.conf", mode: "0644", when: true }
+    - { src: "keepalived.j2", dest: "/etc/default/keepalived", mode: "0644", when: true }
 
 - import_tasks: bgp.yml
   when: nlb_bgp|bool and nlb_forward|length > 0
