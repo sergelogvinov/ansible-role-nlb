@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0](https://github.com/sergelogvinov/ansible-role-nlb/compare/v0.5.1...v0.6.0) (2026-05-25)
+
+
+### Features
+
+* tls health check ([bbb4129](https://github.com/sergelogvinov/ansible-role-nlb/commit/bbb4129175395509f4becc69b3b09414cbfc35de))
+
+
+### Bug Fixes
+
+* check backend list ([8e59e0d](https://github.com/sergelogvinov/ansible-role-nlb/commit/8e59e0d89cb5849dd6a8a195ff4664858989b8e4))
+
 ## [0.5.1](https://github.com/sergelogvinov/ansible-role-nlb/compare/v0.5.0...v0.5.1) (2026-01-31)
 
 
